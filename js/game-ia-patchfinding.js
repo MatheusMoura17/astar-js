@@ -5,9 +5,12 @@ function PatchFinder(current,target){
 	this.currentElement;
 	this.targetElement;
 
+	this.founded;
+
 	this.start=function(){
 		this.targetElement=gm.game.physicsRegion.findApprox(this.target.cx.baseVal.value,this.target.cy.baseVal.value);
 		this.currentElement=gm.game.physicsRegion.findApprox(this.current.cx.baseVal.value,this.current.cy.baseVal.value);
+		this.founded=false;
 	};
 
 	this.findNextPosition=function(){
@@ -24,6 +27,7 @@ function PatchFinder(current,target){
 		//		regions[ii][jj].drawCost();
 		//	}
 		//}
+
 
 		//superior
 		if(j-1>=0 && !regions[i][j-1].static && !regions[i][j-1].used){
@@ -83,19 +87,28 @@ function PatchFinder(current,target){
 		}
 		//console.log(contour);
 
-		this.currentElement.selectPatch();
 
-		var lastMinorCost=contour[0].cost;
-		var bestElement=contour[0];
-		for(var k=0;k<contour.length;k++){
-			if(contour[k].cost<lastMinorCost){
-				bestElement=contour[k];
-				lastMinorCost=contour[k].cost;
+		if(this.currentElement==this.targetElement){
+			if(!this.founded){
+				alert("aaachhhooooouuuuu");
+				this.founded=true;
 			}
+			return new Vector2(this.currentElement.middleX,this.currentElement.middleY);
+		}else{
+			this.currentElement.selectPatch();
+
+			var lastMinorCost=contour[0].cost;
+			var bestElement=contour[0];
+			for(var k=0;k<contour.length;k++){
+				if(contour[k].cost<lastMinorCost){
+					bestElement=contour[k];
+					lastMinorCost=contour[k].cost;
+				}
+			}
+			this.currentElement.used=true;
+			this.currentElement=bestElement;
+			return new Vector2(bestElement.middleX,bestElement.middleY);
 		}
-		this.currentElement.used=true;
-		this.currentElement=bestElement;
-		return new Vector2(bestElement.middleX,bestElement.middleY);
 
 	};
 

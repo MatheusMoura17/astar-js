@@ -7,6 +7,7 @@ function GameManager(){
 
 	var circle;
 
+
 	//invoca o inicializador
 	this.init=function(){
 		this.counter=0;
