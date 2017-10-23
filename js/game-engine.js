@@ -4,7 +4,11 @@ function Game(){
 
 
 	this.init=function(){
-		//quando carregar a pagina invoca a funcao start
-		window.load=this.onStart();
+		var game=this;
+		//quando carregar a pagina invoca a funcao start e inicia o update
+		window.load=new function(){
+			game.onStart();
+			window.setInterval(game.onUpdate,16);
+		};
 	};
 }
