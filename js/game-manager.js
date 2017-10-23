@@ -1,20 +1,21 @@
 function GameManager(){
 
-	var game=new Game();
-
-	//Quando o jogo começa
-	game.onStart=function(){
-		console.log("game started");
-		game.elements.circle.cx+=100;
-	};
-
-	//Frame update
-	game.onUpdate=function(){
-		console.log("game update");
-	};
+	this.game;
 
 	//invoca o inicializador
 	this.init=function(){
-		game.init();
+		this.game=new Game(this.onStart,this.onUpdate);
+		this.game.init();
 	};
+
+	//Quando o jogo começa
+	this.onStart=function(){
+		console.log("gane started");
+	};
+
+	//Frame update
+	this.onUpdate=function(){
+		console.log("game update");
+	};
+
 }

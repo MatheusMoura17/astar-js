@@ -1,7 +1,7 @@
-function Game(){
-	var onStart  = function(){};
-	var onUpdate = function(){};
-	var elements;
+function Game(onStart,onUpdate){
+	this._onStart  = onStart;
+	this._onUpdate = onUpdate;
+	this.elements;
 
 	//inicializa
 	this.init=function(){
@@ -10,7 +10,7 @@ function Game(){
 		this.elements.findElements();
 
 		//invoca a funcao start e inicia o update
-		this.onStart();
-		window.setInterval(this.onUpdate,16);
+		this._onStart();
+		window.setInterval(this._onUpdate,16);
 	};
 }

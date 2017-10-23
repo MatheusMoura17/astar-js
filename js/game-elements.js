@@ -1,8 +1,8 @@
 function GameElements(){
-	var circle;
+	this.circle;
 
 	//busca os elementos no body da pagina
 	this.findElements=function(){
-		circle=document.getElementById("circle");
+		this.circle=document.getElementById("circle");
 	};
 }
