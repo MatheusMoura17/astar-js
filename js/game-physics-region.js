@@ -42,35 +42,66 @@ function RegionManager(){
 			this.matrix[i]=new Array(sizeY);
 			for(var j=0;j<this.matrix[i].length;j++){
 				//instancia um RegionMember para o elemento
-				this.matrix[i][j]=new RegionMember(i*regionSize,j*regionSize);
+				this.matrix[i][j]=new RegionMember(i*regionSize,j*regionSize,i,j);
 				this.matrix[i][j].static=colisors.includes(j+"x"+i);
 				this.matrix[i][j].drawMaker();
 				this.matrix[i][j].drawMakerMiddle();
 			}
 		}
 	};
+
+	//encontra o ponto mais proximo de um item
+	this.findApprox=function(itemX,itemY){
+		var bestDistance=this.matrix[0][0].distanceOf(itemX,itemY);
+		var bestI=0;
+		var bestJ=0;
+		for(var i=0;i<this.matrix.length;i++){
+			for(var j=0;j<this.matrix[i].length;j++){
+				//instancia um RegionMember para o elemento
+				var distance=this.matrix[i][j].distanceOf(itemX,itemY);
+				if(distance<bestDistance){
+					bestDistance=distance;
+					bestI=i;
+					bestJ=j;
+				}
+			}
+		}
+		return this.matrix[bestI][bestJ];
+	};
 }
 
 //um quadrado de uma região
-function RegionMember(x, y){
+function RegionMember(x, y,indexX,indexY){
 	//posição do pivot
+	this.indexX=indexX;
+	this.indexY=indexY;
 	this.middleX=x+(regionSize/2);
 	this.middleY=y+(regionSize/2);
-	this.static;
+	this.static;	
+	this.maker;
+	this.cost;
 
-	
+	this.select=function(){
+		this.maker.setAttribute("stroke","green");
+		this.maker.setAttribute("fill","rgba(0,255,0,0.2)");
+	};
+
+	this.selectPatch=function(){
+		this.maker.setAttribute("stroke","blue");
+		this.maker.setAttribute("fill","rgba(0,0,255,0.2)");
+	};
 
 	//desenha o quadrado na tela
 	this.drawMaker=function(){
-		var maker= document.createElementNS('http://www.w3.org/2000/svg', "rect");
-		maker.setAttribute("x",x);
-		maker.setAttribute("y",y);
-		maker.setAttribute("width",regionSize);
-		maker.setAttribute("height",regionSize);
-		maker.setAttribute("stroke","black");
-		maker.setAttribute("stroke-width","1");
-		maker.setAttribute("fill","none");
-		gm.game.elements.container.appendChild(maker);
+		this.maker= document.createElementNS('http://www.w3.org/2000/svg', "rect");
+		this.maker.setAttribute("x",x);
+		this.maker.setAttribute("y",y);
+		this.maker.setAttribute("width",regionSize);
+		this.maker.setAttribute("height",regionSize);
+		this.maker.setAttribute("stroke","black");
+		this.maker.setAttribute("stroke-width","1");
+		this.maker.setAttribute("fill","none");
+		gm.game.elements.container.appendChild(this.maker);
 	};
 
 	//desenha o pivot na tela
@@ -81,15 +112,20 @@ function RegionMember(x, y){
 		//desenha uma bola maior caso o item seja estatico (colisor)
 		if(this.static){
 			middle.setAttribute("r",2);
-			middle.setAttribute("fill","red");
+			middle.setAttribute("fill","black");
 		}
 		else{
 			middle.setAttribute("r",1);
 			middle.setAttribute("fill","none");
 		}
-		middle.setAttribute("stroke","red");
+		middle.setAttribute("stroke","black");
 		middle.setAttribute("stroke-width","1");
 		gm.game.elements.container.appendChild(middle);
+	};
+
+	//calcula a distancia entre o item e uma coordenada
+	this.distanceOf=function(itemX,itemY){
+		return Math.sqrt(Math.abs((this.middleX-itemX)^2) + Math.abs((this.middleY-itemY)^2));
 	};
 
 
