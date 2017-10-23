@@ -14,6 +14,8 @@ function GameManager(){
 		this.game.init();
 	};
 
+	var position=new Vector2(0,0);
+
 	//Quando o jogo começa
 	this.onStart=function(){
 		console.log("game started");
@@ -21,23 +23,27 @@ function GameManager(){
 		target=gm.game.elements.target;
 		patchFinder=new PatchFinder(circle,target);
 		patchFinder.start();
+		position=patchFinder.findNextPosition();
 	};
+
 
 	//Frame update
 	this.onUpdate=function(){	
-		var position=patchFinder.findNextPosition();
+		if(parseInt(circle.cx.baseVal.value)==parseInt(position.x) && parseInt(circle.cy.baseVal.value) == parseInt(position.y))
+			position=patchFinder.findNextPosition();
 
-		var dx = position.x - circle.cx.baseVal.value;
-		var dy = position.y - circle.cy.baseVal.value;
 
-		var angle = Math.atan(dy, dx);
+		var tx = position.x - circle.cx.baseVal.value,
+		    ty = position.y - circle.cy.baseVal.value,
+		    dist = Math.sqrt(tx*tx+ty*ty),
+		    rad = Math.atan2(ty,tx),
+		    angle = rad/Math.PI * 180;;
 
-		var magnitude = 100.0;
-		var velX = Math.cos(angle) * magnitude;
-		var velY = Math.sin(angle) * magnitude;
+		    velX = (tx/dist)*50*gm.game.deltaTime;
+		    velY = (ty/dist)*50*gm.game.deltaTime;
 
-		circle.cx.baseVal.value +=velX*gm.game.deltaTime;
-		circle.cy.baseVal.value +=velY*gm.game.deltaTime;
+		circle.cx.baseVal.value +=velX;
+		circle.cy.baseVal.value +=velY;
 	};
 
 }

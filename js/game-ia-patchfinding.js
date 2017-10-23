@@ -7,10 +7,10 @@ function PatchFinder(current,target){
 
 	this.start=function(){
 		this.targetElement=gm.game.physicsRegion.findApprox(this.target.cx.baseVal.value,this.target.cy.baseVal.value);
+		this.currentElement=gm.game.physicsRegion.findApprox(this.current.cx.baseVal.value,this.current.cy.baseVal.value);
 	};
 
 	this.findNextPosition=function(){
-		this.currentElement=gm.game.physicsRegion.findApprox(this.current.cx.baseVal.value,this.current.cy.baseVal.value);
 		var i=this.currentElement.indexX;
 		var j=this.currentElement.indexY;
 
@@ -18,36 +18,48 @@ function PatchFinder(current,target){
 
 		var contour=[];
 
+		//for(var ii=0;ii<regions.length;ii++){
+		//	for(var jj=0;jj<regions[ii].length;jj++){
+		//		regions[ii][jj].cost=10+this.targetElement.distanceOf(regions[ii][jj].middleX,regions[ii][jj].middleY);
+		//		regions[ii][jj].drawCost();
+		//	}
+		//}
+
 		//superior
-		if(i-1>0 && !regions[i-1][j].static){
-			regions[i-1][j].cost=10+regions[i-1][j].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
-			regions[i-1][j].select();
-			contour.push(regions[i-1][j]);
+		if(j-1>=0 && !regions[i][j-1].static && !regions[i][j-1].used){
+			regions[i][j-1].cost=10+this.targetElement.distanceOf(regions[i][j-1].middleX,regions[i][j-1].middleY);
+			regions[i][j-1].select();
+			regions[i][j-1].drawCost();
+			contour.push(regions[i][j-1]);
 		}
 		//inferior
-		if(i+1<regions[i].length && !regions[i+1][j].static){
-			regions[i+1][j].cost=10+regions[i+1][j].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
-			regions[i+1][j].select();
-			contour.push(regions[i+1][j])
-		}
-		//direita
-		if(j+1<regions.length && !regions[i][j+1].static){
-			regions[i][j+1].cost=10+regions[i][j+1].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
+		if(j+1<regions[i].length && !regions[i][j+1].static && !regions[i][j+1].used){
+			regions[i][j+1].cost=10+this.targetElement.distanceOf(regions[i][j+1].middleX,regions[i][j+1].middleY);
 			regions[i][j+1].select();
+			regions[i][j+1].drawCost();
 			contour.push(regions[i][j+1])
 		}
+		//direita
+		if(i+1<regions.length && !regions[i+1][j].static && !regions[i+1][j].used){
+			regions[i+1][j].cost=10+this.targetElement.distanceOf(regions[i+1][j].middleX,regions[i+1][j].middleY);
+			regions[i+1][j].select();
+			regions[i+1][j].drawCost();
+			contour.push(regions[i+1][j])
+		}
 		//esquerda
-		if(j-1>0 && !regions[i][j-1].static){
-			regions[i][j-1].cost=10+regions[i][j-1].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
-			regions[i][j-1].select();
-			contour.push(regions[i][j-1])
+		if(i-1>0 && !regions[i-1][j].static && !regions[i-1][j].used){
+			regions[i-1][j].cost=10+this.targetElement.distanceOf(regions[i-1][j].middleX,regions[i-1][j].middleY);
+			regions[i-1][j].select();
+			regions[i-1][j].drawCost();
+			contour.push(regions[i-1][j])
 		}
 		//superior direita
-		if(i-1>0 && j+1<regions.length && !regions[i-1][j+1].static){
-			regions[i-1][j+1].cost=10+regions[i-1][j+1].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
-			regions[i-1][j+1].select();
-			contour.push(regions[i-1][j+1])
-		}
+		//if(i-1>0 && j+1<regions.length && !regions[i-1][j+1].static){
+		//	regions[i-1][j+1].cost=14+regions[i-1][j+1].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
+		//	regions[i-1][j+1].select();
+		//	regions[i-1][j+1].drawCost();
+		//	contour.push(regions[i-1][j+1])
+		//}
 
 		//superior esquerda
 		//inferior direita
@@ -59,11 +71,13 @@ function PatchFinder(current,target){
 		var lastMinorCost=contour[0].cost;
 		var bestElement=contour[0];
 		for(var k=0;k<contour.length;k++){
-			if(contour[k]<lastMinorCost){
+			if(contour[k].cost<lastMinorCost){
 				bestElement=contour[k];
 				lastMinorCost=contour[k].cost;
 			}
 		}
+		this.currentElement.used=true;
+		this.currentElement=bestElement;
 		return new Vector2(bestElement.middleX,bestElement.middleY);
 
 	};

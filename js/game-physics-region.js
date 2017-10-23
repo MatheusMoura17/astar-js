@@ -80,6 +80,7 @@ function RegionMember(x, y,indexX,indexY){
 	this.static;	
 	this.maker;
 	this.cost;
+	this.used;
 
 	this.select=function(){
 		this.maker.setAttribute("stroke","green");
@@ -104,6 +105,18 @@ function RegionMember(x, y,indexX,indexY){
 		gm.game.elements.container.appendChild(this.maker);
 	};
 
+	//exibe o custo no quadro
+	this.drawCost=function(){
+		var costText= document.createElementNS('http://www.w3.org/2000/svg', "text");
+		//costText.setAttribute("value",this.cost);
+		costText.setAttribute("x",x+3);
+		costText.setAttribute("y",y+20);
+		costText.setAttribute("font-size","8px");
+		var textNode = document.createTextNode(parseInt(this.cost));
+  		costText.appendChild(textNode);
+		gm.game.elements.container.appendChild(costText);
+	};
+
 	//desenha o pivot na tela
 	this.drawMakerMiddle=function(){
 		var middle= document.createElementNS('http://www.w3.org/2000/svg', "circle");
@@ -126,7 +139,7 @@ function RegionMember(x, y,indexX,indexY){
 	//calcula a distancia entre o item e uma coordenada
 	this.distanceOf=function(itemX,itemY){
 		return Math.sqrt(Math.abs((this.middleX-itemX)^2) + Math.abs((this.middleY-itemY)^2));
+		//return Math.abs((this.middleX-itemX))+Math.abs((this.middleY-itemY))
 	};
-
 
 }
