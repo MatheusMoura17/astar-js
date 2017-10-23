@@ -22,9 +22,11 @@ function RegionManager(){
 
 //um quadrado de uma região
 function RegionMember(x, y){
+	//posição do pivot
 	this.middleX=x+(regionSize/2);
 	this.middleY=y+(regionSize/2);
 
+	//desenha o quadrado na tela
 	this.drawMaker=function(){
 		var maker= document.createElementNS('http://www.w3.org/2000/svg', "rect");
 		maker.setAttribute("x",x);
@@ -37,6 +39,7 @@ function RegionMember(x, y){
 		gm.game.elements.container.appendChild(maker);
 	};
 
+	//desenha o pivot na tela
 	this.drawMakerMiddle=function(){
 		var middle= document.createElementNS('http://www.w3.org/2000/svg', "circle");
 		middle.setAttribute("cx",this.middleX);
