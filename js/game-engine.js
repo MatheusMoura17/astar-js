@@ -16,8 +16,8 @@ function Game(onStart,onUpdate){
 		this.elements.findElements();
 
 		//cria a matriz de regiões
-		this.physicsRegion=new Region();
-		this.physicsRegion.generate();
+		this.physicsRegion=new RegionManager();
+		this.physicsRegion.generate(28,20);
 
 		//invoca a funcao start
 		this._onStart();
