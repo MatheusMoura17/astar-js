@@ -17,8 +17,8 @@ function GameManager(){
 
 	//Frame update
 	this.onUpdate=function(){
-		circle=gm.game.elements.circle;
-		circle.cx.baseVal.value += 50*gm.game.deltaTime;
+		//circle=gm.game.elements.circle;
+		//circle.cx.baseVal.value += 50*gm.game.deltaTime;
 	};
 
 }
