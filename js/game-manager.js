@@ -27,9 +27,12 @@ function GameManager(){
 	this.onUpdate=function(){	
 		var position=patchFinder.findNextPosition();
 
-		var angle = Math.atan(position.y, position.x);
+		var dx = position.x - circle.cx.baseVal.value;
+		var dy = position.y - circle.cy.baseVal.value;
 
-		var magnitude = 20.0;
+		var angle = Math.atan(dy, dx);
+
+		var magnitude = 100.0;
 		var velX = Math.cos(angle) * magnitude;
 		var velY = Math.sin(angle) * magnitude;
 

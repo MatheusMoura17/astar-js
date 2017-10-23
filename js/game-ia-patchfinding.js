@@ -18,8 +18,6 @@ function PatchFinder(current,target){
 
 		var contour=[];
 
-		this.currentElement.selectPatch();
-
 		//superior
 		if(i-1>0 && !regions[i-1][j].static){
 			regions[i-1][j].cost=10+regions[i-1][j].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
@@ -45,15 +43,18 @@ function PatchFinder(current,target){
 			contour.push(regions[i][j-1])
 		}
 		//superior direita
-	//	if(i-1>0 && j+1<regions.length && !regions[i-1][j+1].static){
-	//		regions[i-1][j+1].select();
-	//		contour.push(regions[i-1][j+1]);
-	//	}
+		if(i-1>0 && j+1<regions.length && !regions[i-1][j+1].static){
+			regions[i-1][j+1].cost=10+regions[i-1][j+1].distanceOf(this.targetElement.indexX,this.targetElement.indexY);
+			regions[i-1][j+1].select();
+			contour.push(regions[i-1][j+1])
+		}
 
 		//superior esquerda
 		//inferior direita
 		//inferior esquerda
 		//console.log(contour);
+
+		this.currentElement.selectPatch();
 
 		var lastMinorCost=contour[0].cost;
 		var bestElement=contour[0];
