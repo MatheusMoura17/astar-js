@@ -1,7 +1,10 @@
 function Game(onStart,onUpdate){
 	this._onStart  = onStart;
 	this._onUpdate = onUpdate;
+	
+	//objetos
 	this.elements;
+	this.physicsRegion;
 
 	//fps dividido por 1
 	this.deltaTime;
@@ -11,6 +14,10 @@ function Game(onStart,onUpdate){
 		//busca os elementos na tela
 		this.elements=new GameElements();
 		this.elements.findElements();
+
+		//cria a matriz de regiões
+		this.physicsRegion=new Region();
+		this.physicsRegion.generate();
 
 		//invoca a funcao start
 		this._onStart();
