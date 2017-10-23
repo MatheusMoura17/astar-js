@@ -4,13 +4,17 @@ function GameManager(){
 
 	//Quando o jogo começa
 	game.onStart=function(){
-		console.log("game stated");
-	}
+		console.log("game started");
+		game.elements.circle.cx+=100;
+	};
 
 	//Frame update
 	game.onUpdate=function(){
 		console.log("game update");
-	}
+	};
 
-	game.init();
+	//invoca o inicializador
+	this.init=function(){
+		game.init();
+	};
 }

@@ -5,16 +5,12 @@ function Game(){
 
 	//inicializa
 	this.init=function(){
-		var game=this;
-		//quando carregar a pagina invoca a funcao start e inicia o update
-		window.load=new function(){
+		//busca os elementos na tela
+		this.elements=new GameElements();
+		this.elements.findElements();
 
-			//busca os elementos na tela
-			game.elements=new GameElements();
-			game.elements.findElements();
-
-			game.onStart();
-			window.setInterval(game.onUpdate,16);
-		};
+		//invoca a funcao start e inicia o update
+		this.onStart();
+		window.setInterval(this.onUpdate,16);
 	};
 }
